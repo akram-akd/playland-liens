@@ -130,12 +130,21 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL = "https://cuekrjcvhtysgetrinuf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Cyn5A0jytRQE4yUJqBrbuQ_J8Yf5ucJ";
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Log a click on a specific link button — fire and forget, never blocks navigation
+function logClick(name){
+  client.from('link_clicks').insert({ link_name: name }).then(function(){}).catch(function(){});
+}
+[['ig-btn','instagram'],['fb-btn','facebook'],['tiktok-btn','tiktok'],['phone-btn','phone'],['email-btn','email'],['maps-btn','maps']].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (el) el.addEventListener('click', function(){ logClick(pair[1]); });
+});
+
 (async function(){
   try{
-    const SUPABASE_URL = "https://cuekrjcvhtysgetrinuf.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Cyn5A0jytRQE4yUJqBrbuQ_J8Yf5ucJ";
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     // Log this visit as a scan — fire and forget, never blocks the page
     client.from('scans').insert({}).then(function(){}).catch(function(){});
 
